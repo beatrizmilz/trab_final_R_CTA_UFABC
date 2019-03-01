@@ -1,0 +1,5 @@
+"0","outorgas_ANA_estadual_2016 <- read_sf(""data/vetor/Outorgas-UF-ESTA-SP-2016-1/Outorgas UF ESTA SP 2016.shp"")"
+"0","outorgas_ANA_federal_2018 <- read_sf(""data/vetor/Outorgas-ANA-EST-SP-2018-1/Outorgas ANA EST SP 2018.shp"")"
+"0","ugrhi <- read_sf(""data/vetor/LimiteUGRHI/LimiteUGRHIPolygon.shp"") "
+"0","estado_SP <- read_sf(""data/vetor/LimiteEstadual/LimiteEstadualPolygon.shp"") "
+"0","MMP_Emplasa <- read_sf(""data/vetor/LimiteMacrometropole2015/LimiteMacrometropole2015Polygon.shp"")"

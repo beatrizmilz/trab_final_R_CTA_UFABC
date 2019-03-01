@@ -1,0 +1,2 @@
+"0","outorgas_MMP_fed_2018_v <- outorgas_MMP_fed_2018 %>% filter(Validade >= as.Date(""2019-03-01""))"
+"0","outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(""2019-03-01""))"

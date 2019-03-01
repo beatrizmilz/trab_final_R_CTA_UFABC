@@ -9,27 +9,38 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ##  Disciplina: CTA-106 - Uso de dados espaciais para estudos ambientais
 
+## Instalar pacotes necessários:
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE }
+install.packages("rgdal")
+install.packages("sf")
+install.packages("tmap")
+install.package("tidyverse")
+install.packages("lubridate")
+
+```
 
 ## Carregar os pacotes necessários:
 
 ```{r message=FALSE, warning=FALSE}
-# install.packages("rgdal")
 library(rgdal)
-
-# install.packages("sf")
 library(sf)
-
-# install.packages("tmap")
 library(tmap)
-
 library(tidyverse)
 library(lubridate)
 ```
 
-## Carregar os dados de outorga
+## Carregar os dados
 ```{r}
 outorgas_ANA_estadual_2016 <- read_sf("data/vetor/Outorgas-UF-ESTA-SP-2016-1/Outorgas UF ESTA SP 2016.shp")
+
 outorgas_ANA_federal_2018 <- read_sf("data/vetor/Outorgas-ANA-EST-SP-2018-1/Outorgas ANA EST SP 2018.shp")
+
+ugrhi <- read_sf("data/vetor/LimiteUGRHI/LimiteUGRHIPolygon.shp") 
+
+estado_SP <- read_sf("data/vetor/LimiteEstadual/LimiteEstadualPolygon.shp") 
+
+MMP_Emplasa <- read_sf("data/vetor/LimiteMacrometropole2015/LimiteMacrometropole2015Polygon.shp")
 ```
 
 
@@ -41,44 +52,39 @@ plot(Latitude ~Longitude, data=outorgas_ANA_estadual_2016)
 st_crs(outorgas_ANA_federal_2018)
 plot(Latitude ~Longitude, data=outorgas_ANA_federal_2018)
 
-
+st_crs(ugrhi)
+st_crs(estado_SP)
+st_crs(MMP_Emplasa)
 ```
+Os dados de outorga estão sem projeção. 
+
 
 ## Adequar as projeções para SIRGAS 2000
 ```{r}
 EPSG <- make_EPSG()
-#sirgas2000 <- as.character(subset(EPSG, code==4674))
 
-outorgas_ANA_estadual_2016_sf <- st_as_sf(outorgas_ANA_estadual_2016, coords = c("Longitude", "Latitude"), crs = 4674)
+st_crs(outorgas_ANA_estadual_2016)<-4674
+st_crs(outorgas_ANA_estadual_2016)
 
-st_crs(outorgas_ANA_estadual_2016_sf)<-4674
-st_crs(outorgas_ANA_estadual_2016_sf)
-plot(Latitude ~Longitude, data=outorgas_ANA_estadual_2016_sf)
+st_crs(outorgas_ANA_federal_2018)<-4674
+st_crs(outorgas_ANA_federal_2018)
 
-
-
-outorgas_ANA_federal_2018_sf <- st_as_sf(outorgas_ANA_federal_2018, coords = c("Longitude", "Latitude"), crs = 4674)
-
-st_crs(outorgas_ANA_federal_2018_sf)<-4674
-st_crs(outorgas_ANA_federal_2018_sf)
-plot(Latitude ~Longitude, data=outorgas_ANA_federal_2018_sf)
 ```
 
-## Carregar o polígono da Macrometrópole e adequar a projeção para SIRGAS 2000
+## Mapa da área de estudo: Macrometrópole (em construção)
 ```{r}
-MMP_Emplasa <- read_sf("data/vetor/LimiteMacrometropole2015/LimiteMacrometropole2015Polygon.shp")
-st_crs(MMP_Emplasa)
-st_crs(outorgas_ANA_federal_2018_sf)<-4674
-plot(st_geometry(MMP_Emplasa))
+
+tm_shape(estado_SP) + tm_polygons()+
+ tm_shape(MMP_Emplasa) + tm_polygons()
 ```
 
 
 ## Selecionar apenas outorgas no território da Macrometrópole Paulista
-```{r}
+```{r message=FALSE, warning=FALSE}
 
-outorgas_MMP_fed_2018 <- outorgas_ANA_federal_2018_sf[MMP_Emplasa, ]
+outorgas_MMP_fed_2018 <- outorgas_ANA_federal_2018[MMP_Emplasa, ]
 
-outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016_sf[MMP_Emplasa, ]
+outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016[MMP_Emplasa, ]
 ```
 
 
@@ -86,7 +92,7 @@ outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016_sf[MMP_Emplasa, ]
 ## Primeira visualização de dados
 
 ```{r message=FALSE, warning=FALSE}
-
+tm_shape(ugrhi) + tm_polygons()+
  tm_shape(MMP_Emplasa) + tm_polygons()+
    tm_grid(alpha = 0.2, labels.rot = c(0,90), labels.inside.frame = FALSE) +
      tm_add_legend(type = "line", col = "gray30", labels = "Macrometrópole Paulista") +
@@ -113,8 +119,9 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
 
 
 ```{r message=FALSE, warning=FALSE}
-
+   tm_shape(ugrhi) + tm_polygons()+
  tm_shape(MMP_Emplasa) + tm_polygons()+
+
    tm_grid(alpha = 0.2, labels.rot = c(0,90), labels.inside.frame = FALSE) +
      tm_add_legend(type = "line", col = "gray30", labels = "Macrometrópole Paulista") +
     tm_shape(outorgas_MMP_fed_2018_v) + tm_bubbles(size = "m3_s", col = "blue")+
