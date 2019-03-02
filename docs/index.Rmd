@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Instalar pacotes necessários:
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE }
 install.packages("rgdal")
 install.packages("sf")
 install.packages("tmap")
@@ -41,6 +41,8 @@ ugrhi <- read_sf("data/vetor/LimiteUGRHI/LimiteUGRHIPolygon.shp")
 estado_SP <- read_sf("data/vetor/LimiteEstadual/LimiteEstadualPolygon.shp") 
 
 MMP_Emplasa <- read_sf("data/vetor/LimiteMacrometropole2015/LimiteMacrometropole2015Polygon.shp")
+
+Brasil_UF <- read_sf("data/vetor/BrasilUF/BrasilUFPolygon.shp")
 ```
 
 
@@ -55,6 +57,7 @@ plot(Latitude ~Longitude, data=outorgas_ANA_federal_2018)
 st_crs(ugrhi)
 st_crs(estado_SP)
 st_crs(MMP_Emplasa)
+st_crs(Brasil_UF)
 ```
 Os dados de outorga estão sem projeção. 
 
@@ -72,11 +75,47 @@ st_crs(outorgas_ANA_federal_2018)
 ```
 
 ## Mapa da área de estudo: Macrometrópole (em construção)
+
 ```{r}
 
-tm_shape(estado_SP) + tm_polygons()+
- tm_shape(MMP_Emplasa) + tm_polygons()
+tm_grid(alpha = 0.1, labels.rot = c(0,90), labels.inside.frame = FALSE)+
+   tm_shape(Brasil_UF) + tm_polygons(col = "gray95")+
+  tm_shape(estado_SP) + tm_polygons(col = "gray80", border.col = "gray43")+
+ tm_shape(MMP_Emplasa) + tm_polygons(col = "gray43", border.col = "black")+
+    tm_compass(position = c("right","top")) + 
+   tm_credits("Projeção SIRGAS 2000 \nFonte dos dados: DATAGEO", position = c("left","bottom")) +
+   tm_scale_bar(position = c("right","bottom")) +
+ tm_layout(main.title = "Mapa da área de estudo", main.title.position = "center", outer.margins = 0.05)
+
+  
 ```
+
+
+```{r}
+
+tm_grid(alpha = 0.1, labels.rot = c(0,90), labels.inside.frame = FALSE)+
+  tm_shape(estado_SP) + tm_polygons()+
+ tm_shape(MMP_Emplasa) + tm_polygons(col = "gray43", border.col = "black")+
+    tm_compass(position = c("right","top")) + 
+   tm_credits("Projeção SIRGAS 2000 \nFonte: DATAGEO", position = c("left","bottom")) +
+   tm_scale_bar(position = c("left","bottom")) +
+ tm_layout(main.title = "Mapa da área de estudo", main.title.position = "center", outer.margins = 0.05)
+
+  
+```
+
+
+```{r}
+tm_grid(alpha = 0.1, labels.rot = c(0,90), labels.inside.frame = FALSE)+
+ tm_shape(MMP_Emplasa) + tm_polygons(border.col = "black")+
+ # tm_shape(ugrhi) + tm_polygons()+
+    tm_compass(position = c("right","top")) + 
+   tm_credits("Projeção SIRGAS 2000 \nFonte: DATAGEO", position = c("right","bottom")) +
+   tm_scale_bar(position = c("right","bottom")) +
+ tm_layout(main.title = "Macrometrópole Paulista", main.title.position = "center", outer.margins = 0.05)
+  
+```
+
 
 
 ## Selecionar apenas outorgas no território da Macrometrópole Paulista
@@ -85,6 +124,8 @@ tm_shape(estado_SP) + tm_polygons()+
 outorgas_MMP_fed_2018 <- outorgas_ANA_federal_2018[MMP_Emplasa, ]
 
 outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016[MMP_Emplasa, ]
+
+
 ```
 
 
@@ -92,8 +133,9 @@ outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016[MMP_Emplasa, ]
 ## Primeira visualização de dados
 
 ```{r message=FALSE, warning=FALSE}
-tm_shape(ugrhi) + tm_polygons()+
+
  tm_shape(MMP_Emplasa) + tm_polygons()+
+  tm_shape(ugrhi) + tm_polygons()+
    tm_grid(alpha = 0.2, labels.rot = c(0,90), labels.inside.frame = FALSE) +
      tm_add_legend(type = "line", col = "gray30", labels = "Macrometrópole Paulista") +
     tm_shape(outorgas_MMP_fed_2018) + tm_bubbles(size = "m3_s", col = "blue")+
@@ -119,9 +161,9 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
 
 
 ```{r message=FALSE, warning=FALSE}
-   tm_shape(ugrhi) + tm_polygons()+
+  
  tm_shape(MMP_Emplasa) + tm_polygons()+
-
+ tm_shape(ugrhi) + tm_polygons()+
    tm_grid(alpha = 0.2, labels.rot = c(0,90), labels.inside.frame = FALSE) +
      tm_add_legend(type = "line", col = "gray30", labels = "Macrometrópole Paulista") +
     tm_shape(outorgas_MMP_fed_2018_v) + tm_bubbles(size = "m3_s", col = "blue")+
@@ -136,6 +178,7 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
 
 ```{r}
  tm_shape(MMP_Emplasa) + tm_polygons()+
+   tm_shape(ugrhi) + tm_polygons()+
    tm_grid(alpha = 0.2, labels.rot = c(0,90), labels.inside.frame = FALSE) +
      tm_add_legend(type = "line", col = "gray30", labels = "Macrometrópole Paulista") +
     tm_shape(outorgas_MMP_fed_2018_v) + tm_bubbles(size = "m3_s", col = "Finalidade")+

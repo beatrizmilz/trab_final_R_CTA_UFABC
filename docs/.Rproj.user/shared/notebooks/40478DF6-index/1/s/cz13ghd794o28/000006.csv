@@ -3,3 +3,4 @@
 "0","ugrhi <- read_sf(""data/vetor/LimiteUGRHI/LimiteUGRHIPolygon.shp"") "
 "0","estado_SP <- read_sf(""data/vetor/LimiteEstadual/LimiteEstadualPolygon.shp"") "
 "0","MMP_Emplasa <- read_sf(""data/vetor/LimiteMacrometropole2015/LimiteMacrometropole2015Polygon.shp"")"
+"0","Brasil_UF <- read_sf(""data/vetor/BrasilUF/BrasilUFPolygon.shp"")"

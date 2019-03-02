@@ -1,6 +1,2 @@
 "0","outorgas_MMP_fed_2018 <- outorgas_ANA_federal_2018[MMP_Emplasa, ]"
-"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
-"
 "0","outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016[MMP_Emplasa, ]"
-"2","although coordinates are longitude/latitude, st_intersects assumes that they are planar
-"

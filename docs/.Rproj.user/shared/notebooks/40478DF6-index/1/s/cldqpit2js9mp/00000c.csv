@@ -1,0 +1,11 @@
+"0","st_crs(outorgas_ANA_federal_2018)"
+"1","Coordinate Reference System:"
+"1","
+"
+"1","  No EPSG code
+"
+"1","  proj4string: """
+"1","+proj=longlat +ellps=GRS80 +no_defs"
+"1","""
+"
+"0","plot(Latitude ~Longitude, data=outorgas_ANA_federal_2018)"
