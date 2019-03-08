@@ -206,7 +206,11 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
 
 
 ```{r}
+
+# pacotes pra testar
 install.packages("reservoir")
 library(reservoir)
+
+devtools::install_github("socialcopsdev/rLandsat")
 ```
 
