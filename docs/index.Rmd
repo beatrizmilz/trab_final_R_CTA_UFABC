@@ -144,7 +144,7 @@ outorgas_MMP_est_2016 <- outorgas_ANA_estadual_2016[MMP_Emplasa, ]
   tm_scale_bar(position = c("right","top")) +
    tm_compass(position = c("left","top")) + 
    tm_credits(" Projecao SIRGAS 2000 \n Fonte: DATAGEO, SEADE", position = c("right","bottom")) +
- tm_layout(main.title = "Outorgas de Recursos Hídricos \n na Macrometrópole Paulista", main.title.position = "center", outer.margins = 0.05)
+ tm_layout(main.title = "Outorgas de Recursos Hídricos \n na Macrometrópole Paulista", main.title.position = "center", outer.margins = 0.05, legend.outside = TRUE)
 
 ```
 
@@ -172,7 +172,7 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
   tm_scale_bar(position = c("right","top")) +
    tm_compass(position = c("left","top")) + 
    tm_credits(" Projecao SIRGAS 2000 \n Fonte: DATAGEO, SEADE", position = c("right","bottom")) +
- tm_layout(main.title = "Outorgas de Recursos Hídricos vigentes \n na Macrometrópole Paulista", main.title.position = "center", outer.margins = 0.05)
+ tm_layout(main.title = "Outorgas de Recursos Hídricos vigentes \n na Macrometrópole Paulista", main.title.position = "center", outer.margins = 0.05, legend.outside = TRUE)
 
 ```
 
@@ -202,5 +202,11 @@ outorgas_MMP_est_2016_v <- outorgas_MMP_est_2016 %>% filter(Validade >= as.Date(
    tm_compass(position = c("left","top")) + 
    tm_credits(" Projecao SIRGAS 2000 \n Fonte: DATAGEO, SEADE", position = c("right","bottom")) +
  tm_layout(main.title = "Outorgas de Recursos Hídricos vigentes \n na Macrometrópole Paulista - Estadual", main.title.position = "center", outer.margins = 0.05, legend.outside = TRUE)
+```
+
+
+```{r}
+install.packages("reservoir")
+library(reservoir)
 ```
 
